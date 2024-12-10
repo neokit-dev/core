@@ -22,5 +22,5 @@ You can continue by adding plugins now.
 
 ## Plugins
 
-We have a list of all official and community plugins here: [@neokit-dev/awesome](https://github.com/neokit-dev/awesome);
+We have a list of all official and community plugins here: [@neokit-dev/awesome](https://github.com/neokit-dev/awesome)
 
