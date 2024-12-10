@@ -1,6 +1,10 @@
 <script lang="ts">
-  export let data;
+	import { maxApi, minApi } from '$lib/index.js';
+
+	export let data;
 </script>
+
+<h1>Plugin API tests</h1>
 
 <h2>Plugin test 1</h2>
 
@@ -27,5 +31,17 @@
 <h2>Plugin test 4</h2>
 
 <h3>Test 1</h3>
-<p>Should be: "Error: This plugin is not compatible with this version of NeoKit. Expected Plugin API version between 1 and 1, got 0"</p>
+<p>
+	Should be: "Error: This plugin is not compatible with this version of NeoKit. Expected Plugin API
+	version between {minApi} and {maxApi}, got 0"
+</p>
 <p>Is: {JSON.stringify(data.pluginTest4Results)}</p>
+
+<h2>Plugin test 5</h2>
+
+<h3>Test 1</h3>
+<p>
+	Should be: "Error: Plugin dev.neokit.example5 requires plugin dev.neokit.example API version
+	between 2 and 7, got 1"
+</p>
+<p>Is: {JSON.stringify(data.pluginTest5Results)}</p>
