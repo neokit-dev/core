@@ -1,4 +1,3 @@
-import { init } from '$lib/init.js';
 import type { Plugin } from '$lib/plugins.js';
 
 declare global {
@@ -8,6 +7,7 @@ declare global {
 	};
 }
 
-init();
+// init has to be exported as this function call above will only occur in the build process
+export { init } from '$lib/init.js';
 
 export * from '$lib/plugins.js';

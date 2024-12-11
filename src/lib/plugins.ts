@@ -1,3 +1,5 @@
+import { isInitialized } from '$lib/init.js';
+
 export const minApi = 2;
 export const maxApi = 2;
 
@@ -27,6 +29,7 @@ export function defaultPluginOptions(
 }
 
 export function load(...plugins: Plugin[]): void {
+	if (!isInitialized()) throw new Error('NeoKit is not initialized, call init() first');
 	plugins.forEach((plugin) => {
 		if (plugin.apiVersion < minApi || plugin.apiVersion > maxApi)
 			throw new Error(
@@ -40,9 +43,12 @@ export function load(...plugins: Plugin[]): void {
 				}
 				const minVer = version[0] ?? 0;
 				const maxVer = version[1] ?? Infinity;
-				const requiredPlugin = globalThis.neokit.plugins[required][Object.keys(globalThis.neokit.plugins[required])[0]];
+				const requiredPlugin =
+					globalThis.neokit.plugins[required][Object.keys(globalThis.neokit.plugins[required])[0]];
 				if (requiredPlugin.version < minVer || requiredPlugin.version > maxVer) {
-					throw new Error(`Plugin ${plugin.id} requires plugin ${required} API version between ${minVer} and ${maxVer}, got ${requiredPlugin.version}`);
+					throw new Error(
+						`Plugin ${plugin.id} requires plugin ${required} API version between ${minVer} and ${maxVer}, got ${requiredPlugin.version}`
+					);
 				}
 			});
 		}
@@ -52,5 +58,6 @@ export function load(...plugins: Plugin[]): void {
 }
 
 export function access(id: string): Record<string, Plugin> {
+	if (!isInitialized()) throw new Error('NeoKit is not initialized, call init() first');
 	return globalThis.neokit.plugins[id];
 }

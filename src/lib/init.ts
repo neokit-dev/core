@@ -5,3 +5,7 @@ export function init() {
     plugins: {},
   };
 }
+
+export function isInitialized() {
+  return !!globalThis.neokit;
+}

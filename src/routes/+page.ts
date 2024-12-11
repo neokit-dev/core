@@ -3,8 +3,11 @@ import {
 	type Plugin,
 	defaultPluginOptions,
 	access,
-	load as loadPlugin
+	load as loadPlugin,
+	init
 } from '$lib/index.js';
+
+init();
 
 // Plugin test 1
 const defaultNamespace = 'example';
