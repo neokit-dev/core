@@ -3,6 +3,7 @@ export function init() {
 
   globalThis.neokit = {
     plugins: {},
+    handlers: []
   };
 }
 

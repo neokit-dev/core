@@ -10,6 +10,7 @@ export interface Plugin extends PluginOptionsRequired {
 	version: number;
 	requires?: Record<string, number[]>;
 	apiVersion: number;
+	onLoaded?: () => void;
 }
 
 export interface PluginOptions {
@@ -58,6 +59,7 @@ export function load(...plugins: Plugin[]): void {
 		}
 		if (!globalThis.neokit.plugins[plugin.id]) globalThis.neokit.plugins[plugin.id] = {};
 		globalThis.neokit.plugins[plugin.id][plugin.namespace] = plugin;
+		if (plugin.onLoaded) plugin.onLoaded();
 	});
 }
 
