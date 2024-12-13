@@ -1,7 +1,8 @@
 import { isInitialized } from '$lib/init.js';
+import type { Handle } from '@sveltejs/kit';
 
 export const minApi = 2;
-export const maxApi = 2;
+export const maxApi = 3;
 
 export interface Plugin extends PluginOptionsRequired {
 	id: string;
@@ -13,10 +14,12 @@ export interface Plugin extends PluginOptionsRequired {
 
 export interface PluginOptions {
 	namespace?: string;
+	allowInjection?: boolean;
 }
 
 export interface PluginOptionsRequired {
 	namespace: string;
+	allowInjection?: boolean;
 }
 
 export function defaultPluginOptions(
@@ -24,7 +27,8 @@ export function defaultPluginOptions(
 	defaults: PluginOptionsRequired
 ): PluginOptionsRequired {
 	return {
-		namespace: options?.namespace ?? defaults.namespace
+		namespace: options?.namespace ?? defaults.namespace,
+		allowInjection: options?.allowInjection ?? defaults.allowInjection ?? false
 	};
 }
 
@@ -60,4 +64,18 @@ export function load(...plugins: Plugin[]): void {
 export function access(id: string): Record<string, Plugin> {
 	if (!isInitialized()) throw new Error('NeoKit is not initialized, call init() first');
 	return globalThis.neokit.plugins[id];
+}
+
+export function registerHandler(handler: Handle): void {
+	if (!isInitialized()) throw new Error('NeoKit is not initialized, call init() first');
+	globalThis.neokit.handlers.push(handler);
+}
+
+export function inject(id: string, namespace: string, plugin: unknown): void {
+	if (!isInitialized()) throw new Error('NeoKit is not initialized, call init() first');
+	if (!globalThis.neokit.plugins[id][namespace].allowInjection) {
+		throw new Error(`Plugin ${id} does not allow injection`);
+	}
+
+	globalThis.neokit.plugins[id][namespace].plugin = plugin;
 }
